@@ -1,5 +1,7 @@
 const { BotFrameworkAdapter, ConversationState, InputHints, MemoryStorage, UserState, ActivityTypes } = require('botbuilder');
 
+import { ApplicationBot } from './bot';
+
 // Import required packages
 const path = require('path');
 const restify = require('restify');
@@ -31,33 +33,34 @@ server.listen(process.env.port || process.env.PORT || 3978, function () {
     console.log('\nTo talk to your bot, open the emulator select "Open Bot"');
 });
 
+server.get('/testing', (request, response) => {
+    response.send('HEy!');
+});
+
+
+const bot = new ApplicationBot();
 
 // Listen for incoming activities and route them to your bot main dialog.
 server.post('/api/messages', (req, res) => {
     // Route received a request to adapter for processing
     adapter.processActivity(req, res, async (context) => {
-        if (context.activity.type === 'message') {
-            conversationState.get(context);
-            await context.sendActivity(`You Said: ${context.activity.text}`);
-        } else {
-            await context.sendActivity(`${context.activity.type}`);
-        }
+        await bot.onTurn(context);
     });
 });
 
 // Listen for Upgrade requests for Streaming.
-server.on('upgrade', (req, socket, head) => {
-    // Create an adapter scoped to this WebSocket connection to allow storing session data.
-    const streamingAdapter = new BotFrameworkAdapter({
-        appId: process.env.APP_ID,
-        appPassword: process.env.APP_SECRET
-    });
-    // Set onTurnError for the BotFrameworkAdapter created for each connection.
-    streamingAdapter.onTurnError = onTurnErrorHandler;
+// server.on('upgrade', (req, socket, head) => {
+//     // Create an adapter scoped to this WebSocket connection to allow storing session data.
+//     const streamingAdapter = new BotFrameworkAdapter({
+//         appId: process.env.APP_ID,
+//         appPassword: process.env.APP_SECRET
+//     });
+//     // Set onTurnError for the BotFrameworkAdapter created for each connection.
+//     streamingAdapter.onTurnError = onTurnErrorHandler;
 
-    streamingAdapter.useWebSocket(req, socket, head, async (context) => {
-        // After connecting via WebSocket, run this logic for every request sent over
-        // the WebSocket connection.
-        //await bot.run(context);
-    });
-});
+//     streamingAdapter.useWebSocket(req, socket, head, async (context) => {
+//         // After connecting via WebSocket, run this logic for every request sent over
+//         // the WebSocket connection.
+//         //await bot.run(context);
+//     });
+// });
