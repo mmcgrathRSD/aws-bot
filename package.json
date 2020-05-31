@@ -1,0 +1,26 @@
+{
+    "name": "aws-notification",
+    "version": "1.0.0",
+    "description": "Who Knows",
+    "author": "Generated using Microsoft Bot Builder Yeoman generator v4.7.0",
+    "license": "MIT",
+    "main": "index.js",
+    "scripts": {
+        "start": "nodemon --exec babel-node index.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com"
+    },
+    "dependencies": {
+        "botbuilder": "~4.7.0",
+        "dotenv": "^8.2.0",
+        "restify": "~8.4.0"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.10.2",
+        "@babel/node": "^7.10.1",
+        "@babel/preset-env": "^7.10.2",
+        "nodemon": "^1.19.4"
+    }
+}
